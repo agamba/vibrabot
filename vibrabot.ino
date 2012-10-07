@@ -1,7 +1,5 @@
 #include <JeeLib.h> 
 
-byte recvCount;
-
 // set PINs
 int gotMsg = 4;   // set the digital for LED showing incomming signals
 int vibrator = 5; // set the analog pin where the vibrator is connected
@@ -13,12 +11,7 @@ int groupId = 4; // the ID of the group this node is addded to
 // initialize variables 
 byte remoteVal; // each byte sent from the server is parsed as an incomming value of type char
 int valInt; // remote val as integer. 
-
-int remoteValMap = 0; // a value in the range 0 - 255 to be sent as an analog write: either to the vibrator and/or other sensors...
-int testTimer = 0;
-String s = "";
-
-char ASCIIchar = '0';
+int remoteValMap; // a value in the range 0 - 255 to be sent as an analog write: either to the vibrator and/or other sensors...
 
 void setup () 
 { 
@@ -29,28 +22,8 @@ void setup ()
     pinMode(vibrator, OUTPUT); 
 } 
 
-
 void loop () 
 { 
-  testTimer++;
-
-//  ASCIIchar++;
-  
-  // log 
-  //Serial.println(testTimer); 
-  //Serial.println(ASCIIchar); 
-  
-//  analogWrite(vibrator, testTimer);
-
-
-/*  
-  if(testTimer>254)
-  {
-    testTimer = 0;
-    analogWrite(vibrator, testTimer);
-//    delay(100);
-  } 
- */ 
   // check when the node gets a package
   if (rf12_recvDone() && rf12_crc == 0) { 
 
@@ -66,7 +39,6 @@ void loop ()
       remoteVal =  rf12_data[i];
     
       // transform byte into an integer
-//      valInt = remoteVal - '0';
       valInt = (int)remoteVal;
 
       /* Transform value 0-5 to 0-255
@@ -84,6 +56,4 @@ void loop ()
     recvCount = (recvCount + 1) % 20; 
        //*/ 
   } // end if this node gets a package
-
-//  delay(30);
 } // end loop function
